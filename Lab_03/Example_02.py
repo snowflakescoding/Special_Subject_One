@@ -1,4 +1,4 @@
-#task:  python function that asks user to input an integer which must be an odd number from 1 to 50.
+#task: python function that asks user to input an integer which must be an odd number from 1 to 50.
 
 def inputValidation():
     while True:
