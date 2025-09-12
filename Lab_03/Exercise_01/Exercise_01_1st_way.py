@@ -1,5 +1,7 @@
 # task: build a python function to check whether a number is a prime number or not
 
+# 1st way: importing math
+
 import math # this is used for finding square root of a number
 
 def isPrime(num):
