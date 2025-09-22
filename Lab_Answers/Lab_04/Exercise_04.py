@@ -10,20 +10,12 @@ Write a Python3 function named setOperator(list1, list2, operator) that has thre
 2. operator is a string that has the value 'x', '/', or 'u'. This parameter indicates which operator from the three operators above we want to perform on the two strings.
 """
 
-def setOperator(list1, list2, operator):
-    # convert list to set
-    set1 = set(list1)
-    set2 = set(list2)
-    set_result = set()
-    
-    # use if-elif-else for checking with operators
+def setOperation(list1, list2, operator):
     if operator == 'x':
-        set_result = set1.intersection(set2) # (1)
+        return [item for item in list1 if item in list2] # intersect way
     elif operator == '/':
-        set_result = set1.difference(set2) # (2)
+        return [item for item in list1 if item not in list2] # difference way
     elif operator == 'u':
-        set_result = set1.symmetric_difference(set2) # (3)
+        return [item for item in list1 if item not in list2] + [item for item in list2 if item not in list1] # symmetric difference way
     else: 
-        print(f"Warning: Unknown operator '{operator}'")
-    
-    return sorted(list(set_result))
+        return []
