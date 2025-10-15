@@ -1,4 +1,10 @@
 """
+A class called Author (as shown in the class diagram) is designed to model a book's author. It contains:
+Three private instance variables: name (String), email (String), and gender (char of either "m" or "f").
+One constructor to initialize the name, email, and gender with the given values. There is no default constructor for Author, as there are no defaults for name, email, and gender.
+public getters/setters: getName(), getEmail(), setEmail(), and getGender(). There are no setters for name and gender, as these attributes cannot be changed.
+toString() method for string representation of the instance, in the text form: "Author[name=?,email=?,gender=?]".
+
 A class called Book is designed (as shown in the class diagram) to model a book written by a single author. It contains:
 Four private instance variables: name (String), author (of the class Author, you have just created, assume that a book has one and only one author), price (double), and qty (int) with a default value of 0.
 Two constructors with qty and without qty.
