@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        
+        <div class="glass-card p-4 mb-5 fade-in-up">
+            <h4 class="mb-3 fw-bold text-primary"><i class="fas fa-plus-circle"></i> Thêm công việc mới</h4>
+            <form action="/add" method="POST" class="d-flex gap-3">
+                <input type="text" name="title" class="form-control custom-input" placeholder="Ví dụ: Học Flask trong 30 phút..." required autocomplete="off">
+                <button type="submit" class="btn btn-primary btn-custom-add text-nowrap">
+                    Thêm ngay
+                </button>
+            </form>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-3 text-white">
+            <h5 class="fw-bold">Danh sách việc cần làm</h5>
+            <span class="badge bg-light text-dark rounded-pill">{{ tasks|length }} Tasks</span>
+        </div>
+
+        {% for task in tasks %}
+        <div class="glass-card task-item p-3 {% if task.is_completed %}task-completed{% endif %}">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-3">
+                    <a href="/toggle/{{ task.id }}" class="text-decoration-none custom-checkbox">
+                        {% if task.is_completed %}
+                        <i class="fas fa-check-circle text-success"></i>
+                        {% else %}
+                        <i class="far fa-circle text-secondary"></i>
+                        {% endif %}
+                    </a>
+                    
+                    <div class="task-content">
+                        <h6 class="mb-0 fw-bold task-title">{{ task.title }}</h6>
+                        {% if task.description %}
+                        <small class="text-muted" style="font-size: 0.85rem;">{{ task.description }}</small>
+                        {% endif %}
+                        <div class="text-muted" style="font-size: 0.7rem;">
+                            <i class="far fa-clock"></i> {{ task.created_at.strftime('%H:%M %d/%m') }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="/edit/{{ task.id }}" class="btn btn-sm btn-light text-primary shadow-sm rounded-circle" title="Sửa"><i class="fas fa-pen"></i></a>
+                    <a href="/delete/{{ task.id }}" class="btn btn-sm btn-light text-danger shadow-sm rounded-circle delete-btn" title="Xóa"><i class="fas fa-trash"></i></a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="text-center py-5 glass-card fade-in-up">
+            <i class="fas fa-mug-hot fs-1 text-white mb-3" style="opacity: 0.8;"></i>
+            <p class="text-white">Tuyệt vời! Bạn đang rảnh rỗi.<br>Hãy thêm task để bắt đầu ngày mới.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
