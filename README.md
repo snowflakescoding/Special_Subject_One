@@ -1,4 +1,4 @@
-# Special Subject One (abbreviations: SS1)
+# Special Subject One (SS1)
 
 A collection of Python solutions for lab exercises and assignments from the SS1 course.
 
@@ -12,15 +12,22 @@ This repository contains my work for the SS1 course, including:
 
 ```
 Special_Subject_One/
-├── Assignments/         # Course assignments
-│   ├── Assignment01/     
-│   └── Assignment02/    
-├── Lab_Answers/         # Lab exercise solutions
-│   ├── Lab_01/          
-│   ├── Lab_02/          
-│   ├── Lab_03/          
-│   └── ...              # Additional labs
-└── README.md            # Here
+├── final-term/          # Final term exercises
+│   ├── part1/           # Final term part 1
+│   ├── part2/           # Final term part 2
+│   └── part3/           # Final term part 3
+├── lab-answers/         # Lab exercise solutions
+│   ├── week-01/         # Week 1 lab solutions
+│   ├── week-02/         # Week 2 lab solutions
+│   ├── week-03/         # Week 3 lab solutions
+│   ├── week-04/         # Week 4 lab solutions
+│   ├── week-05/         # Week 5 lab solutions
+│   ├── week-06/         # Week 6 lab solutions
+│   └── week-07/         # Week 7 lab solutions
+├── mid-term/            # Mid-term assignments
+│   ├── Assignment01/    # Mid-term assignment 1
+│   └── Assignment02/    # Mid-term assignment 2
+└── README.md            # This file
 ```
 
 ## 🐍 Prerequisites
@@ -35,18 +42,25 @@ Special_Subject_One/
 
 Each weekly lab (only happen in first 7 weeks), midterm and finalterm assignment is organized in its own directory. To run any script from:
 
-* Weekly labs:
+**Weekly labs:**
 
 ```bash
-cd Lab_XX
-python Exercise_XX.py (Exercise_XX must be inside the right Lab_XX folder)
+cd lab-answers/week-XX
+python Exercise_XX.py
 ```
 
-* Assignments:
+**Mid-term Assignments:**
 
 ```bash
-cd AssignmentXX
-python questionX.py (questionX must be inside the right AssignmentXX folder)
+cd mid-term/Assignment01
+python questionX.py
+```
+
+**Final Term:**
+
+```bash
+cd final-term/partX
+python script_name.py
 ```
 
 ## 📚 Topics Covered
@@ -71,7 +85,7 @@ python questionX.py (questionX must be inside the right AssignmentXX folder)
 
 ## 👤 Author
 
-SnowFlakes
+[SnowFlakes](https://x.com/snowflakesosu)
 
 ## 📄 License
 
