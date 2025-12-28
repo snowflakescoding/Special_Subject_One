@@ -33,7 +33,7 @@ Special_Subject_One/
 
 ## 🚀 Usage
 
-Each weekly lab and assignment is organized in its own directory. To run any script from:
+Each weekly lab (only happen in first 7 weeks), midterm and finalterm assignment is organized in its own directory. To run any script from:
 
 * Weekly labs:
 
@@ -79,4 +79,4 @@ This project is for educational purposes only.
 
 ---
 
-*Last update: November 2, 2025*
+*Last update: December 28th, 2025*

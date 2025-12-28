@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book List App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        :root {
+            --primary-color: #007aff; 
+            --success-color: #34c759;
+            --warning-color: #ff9500;
+            --danger-color: #ff3b30;
+            --light-gray: #f2f2f7;
+            --medium-gray: #e5e5ea;
+            --border-color: #d1d1d6;
+            --text-primary: #1c1c1e;
+            --text-secondary: #636366;
+            --background-color: #f4f7f6;
+            --card-background: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--background-color);
+            padding: 20px;
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h2, h3 {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background: var(--card-background);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05), 0 4px 10px rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 30px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .header h2 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+        
+        .actions button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-left: 10px;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .actions button:hover {
+            opacity: 0.85;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        #createBtn {
+            background-color: var(--success-color);
+            color: white;
+        }
+        #updateBtn {
+            background-color: var(--warning-color);
+            color: white;
+        }
+        #deleteBtn {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border-bottom: 1px solid var(--light-gray);
+            padding: 16px 30px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        tr {
+            transition: background-color 0.15s ease-in-out;
+        }
+        tr:hover {
+            background-color: #f8f8fa;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            vertical-align: middle;
+            accent-color: var(--primary-color);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 100; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 0;
+            border: 1px solid var(--medium-gray);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--light-gray);
+            padding: 20px 25px;
+            background-color: #fcfcfc;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+        }
+
+        .close {
+            color: var(--text-secondary);
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .close:hover {
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .modal-body form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .modal-body input[type="text"],
+        .modal-body input[type="number"] {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .modal-body input[type="text"]:focus,
+        .modal-body input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+        }
+
+        .modal-body button {
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.2s ease;
+        }
+        .modal-body button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>BOOK LIST</h2>
+            <div class="actions">
+                <button id="createBtn">Create</button>
+                <button id="updateBtn">Update</button>
+                <button id="deleteBtn">Delete</button>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Genre</th>
+                    <th>Book Title</th>
+                    <th>Author</th>
+                    <th>Publication Year</th>
+                    <th>Publisher</th>
+                </tr>
+            </thead>
+            <tbody id="bookTableBody">
+            </tbody>
+        </table>
+    </div>
+
+    <div id="createModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Book</h3>
+                <span class="close" data-modal="createModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="createForm">
+                    <input type="text" name="genre" placeholder="Genre" required>
+                    <input type="text" name="title" placeholder="Book Title" required>
+                    <input type="text" name="author" placeholder="Author" required>
+                    <input type="number" name="year" placeholder="Publication Year" required>
+                    <input type="text" name="publisher" placeholder="Publisher" required>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="updateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Update Book</h3>
+                <span class="close" data-modal="updateModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="updateForm">
+                    <input type="hidden" id="updateId" name="id">
+                    <input type="text" id="updateGenre" name="genre" placeholder="Genre" required>
+                    <input type="text" id="updateTitle" name="title" placeholder="Book Title" required>
+                    <input type="text" id="updateAuthor" name="author" placeholder="Author" required>
+                    <input type="number" id="updateYear" name="year" placeholder="Publication Year" required>
+                    <input type="text" id="updatePublisher" name="publisher" placeholder="Publisher" required>
+                    <button type="submit">Submit Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_CONFIG = {
+            PORT: 5000, // <-- Need to change backend port here
+            HOST: 'http://127.0.0.1'
+        };
+        
+        const API_BASE_URL = `${API_CONFIG.HOST}:${API_CONFIG.PORT}`;
+
+        let allBooks = []; 
+
+        async function fetchBooks() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/list`); 
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                allBooks = await response.json();
+                renderTable(allBooks);
+            } catch (error) {
+                console.error('Failed to fetch books:', error);
+                alert('Could not load the book list. Please make sure the backend is running.');
+            }
+        }
+
+        function renderTable(books) {
+            const tbody = document.getElementById('bookTableBody');
+            tbody.innerHTML = '';
+            books.forEach(book => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="selected_id" value="${book.id}">
+                        </td>
+                        <td>${book.genre}</td>
+                        <td>${book.title}</td>
+                        <td>${book.author}</td>
+                        <td>${book.year}</td>
+                        <td>${book.publisher}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        document.getElementById('createForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const bookData = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/add`, { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(bookData),
+                });
+                
+                if (!response.ok) throw new Error('Failed to create book');
+                
+                hideModal('createModal');
+                this.reset();
+                fetchBooks();
+            } catch (error) {
+                console.error('Create error:', error);
+                alert('Error creating book.');
+            }
+        });
+        
+        document.getElementById('deleteBtn').addEventListener('click', async function() {
+            const selectedId = getSelectedId();
+            if (!selectedId) {
+                alert('Please select a book to delete.');
+                return;
+            }
+
+            if (!confirm('Are you sure you want to delete this book?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/delete?id=${selectedId}`, { 
+                    method: 'GET',
+                });
+
+                if (!response.ok) throw new Error('Failed to delete book');
+                
+                fetchBooks();
+            } catch (error) {
+                console.error('Delete error:', error);
+                alert('Error deleting book.');
+            }
+        });
+
+        
+        document.getElementById('updateBtn').addEventListener('click', function() {
+            const selectedId = getSelectedId();
+            if (!selectedId) {
+                alert('Please select a book to update.');
+                return;
+            }
+
+            const bookToUpdate = allBooks.find(b => b.id == selectedId);
+            if (!bookToUpdate) {
+                alert('Book information not found.');
+                return;
+            }
+
+            document.getElementById('updateId').value = bookToUpdate.id;
+            document.getElementById('updateGenre').value = bookToUpdate.genre;
+            document.getElementById('updateTitle').value = bookToUpdate.title;
+            document.getElementById('updateAuthor').value = bookToUpdate.author;
+            document.getElementById('updateYear').value = bookToUpdate.year;
+            document.getElementById('updatePublisher').value = bookToUpdate.publisher;
+            
+            showModal('updateModal');
+        });
+
+        document.getElementById('updateForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const bookData = Object.fromEntries(formData.entries());
+            const bookId = bookData.id;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/update?id=${bookId}`, { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(bookData),
+                });
+                
+                if (!response.ok) throw new Error('Failed to update book');
+                
+                hideModal('updateModal');
+                fetchBooks();
+            } catch (error) {
+                console.error('Update error:', error);
+                alert('Error updating book.');
+            }
+        });
+
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        document.getElementById('createBtn').addEventListener('click', () => showModal('createModal'));
+        document.querySelectorAll('.close').forEach(el => {
+            el.addEventListener('click', () => hideModal(el.dataset.modal));
+        });
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                hideModal(event.target.id);
+            }
+        }
+        
+        function getSelectedId() {
+            const selectedCheckbox = document.querySelector('input[name="selected_id"]:checked');
+            return selectedCheckbox ? selectedCheckbox.value : null;
+        }
+
+        document.getElementById('bookTableBody').addEventListener('change', function(e) {
+            if (e.target.name === 'selected_id' && e.target.checked) {
+                document.querySelectorAll('input[name="selected_id"]').forEach(checkbox => {
+                    if (checkbox !== e.target) checkbox.checked = false;
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', fetchBooks);
+
+    </script>
+</body>
+</html>

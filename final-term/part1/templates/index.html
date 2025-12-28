@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Book List App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .actions button {
+            padding: 8px 16px;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal.show {
+            display: block;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 5px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: black;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        .submit-btn {
+            padding: 8px 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .error {
+            color: red;
+            padding: 10px;
+            background-color: #ffeeee;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+        
+        <form method="POST" action="/submit_action">
+            <div class="header">
+                <h2>BOOK LIST</h2>
+                <div class="actions">
+                    <button type="submit" name="action" value="create">Create</button>
+                    <button type="submit" name="action" value="update">Update</button>
+                    <button type="submit" name="action" value="delete">Delete</button>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Genre</th>
+                        <th>Book Title</th>
+                        <th>Author</th>
+                        <th>Publication Year</th>
+                        <th>Publisher</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in bookList %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="selected_ids" value="{{ book.id }}">
+                        </td>
+                        <td>{{ book.genre }}</td>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.author }}</td>
+                        <td>{{ book.year }}</td>
+                        <td>{{ book.publisher }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+    <!-- Create Modal -->
+    <div id="createModal" class="modal {% if show_create_modal %}show{% endif %}">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('createModal')">&times;</span>
+            <h2>Create New Book</h2>
+            <form method="POST" action="/create_book">
+                <div class="form-group">
+                    <label>Genre:</label>
+                    <input type="text" name="genre" required>
+                </div>
+                <div class="form-group">
+                    <label>Book Title:</label>
+                    <input type="text" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label>Author:</label>
+                    <input type="text" name="author" required>
+                </div>
+                <div class="form-group">
+                    <label>Publication Year:</label>
+                    <input type="number" name="year" required>
+                </div>
+                <div class="form-group">
+                    <label>Publisher:</label>
+                    <input type="text" name="publisher" required>
+                </div>
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Update Modal -->
+    <div id="updateModal" class="modal {% if show_update_modal %}show{% endif %}">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('updateModal')">&times;</span>
+            <h2>Update Book</h2>
+            <form method="POST" action="/update_book">
+                {% if selected_book %}
+                <input type="hidden" name="book_id" value="{{ selected_book.id }}">
+                <div class="form-group">
+                    <label>Genre:</label>
+                    <input type="text" name="genre" value="{{ selected_book.genre }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Book Title:</label>
+                    <input type="text" name="title" value="{{ selected_book.title }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Author:</label>
+                    <input type="text" name="author" value="{{ selected_book.author }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Publication Year:</label>
+                    <input type="number" name="year" value="{{ selected_book.year }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Publisher:</label>
+                    <input type="text" name="publisher" value="{{ selected_book.publisher }}" required>
+                </div>
+                <button type="submit" class="submit-btn">Submit</button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+        
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('show');
+            }
+        }
+    </script>
+</body>
+</html>
