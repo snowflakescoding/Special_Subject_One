@@ -2,6 +2,10 @@
 
 A collection of Python solutions for lab exercises and assignments from the SS1 course.
 
+## 👤 Author
+
+[SnowFlakes](https://x.com/snowflakesosu)
+
 ## 📋 Overview
 
 This repository contains my work for the SS1 course, including:
@@ -82,10 +86,6 @@ python script_name.py
 
 - All solutions are written in Python
 - Code follows [PEP 8](https://www.python.org/dev/peps/pep-0008/) style guidelines
-
-## 👤 Author
-
-[SnowFlakes](https://x.com/snowflakesosu)
 
 ## 📄 License
 
