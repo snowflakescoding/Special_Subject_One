@@ -13,7 +13,6 @@ You are required to write code for the MyPoint and MyLine classes.
 
 import math
 
-# MyPoint class
 class MyPoint:
     def __init__(self, x=0, y=0):
         self.x = x
@@ -38,22 +37,24 @@ class MyPoint:
         self.x = x
         self.y = y
     
-    def __str__(self):
+    def toString(self):
         return f"({self.x},{self.y})"
     
-    # calculate the distance between two points
+    def __str__(self):
+        return self.toString()
+    
     def distance(self, x=0, y=0, another=None):
         if another is not None:
-            dx = self.x - another.x
-            dy = self.y - another.y
-        else:
-            dx = self.x - x
-            dy = self.y - y
-        return math.sqrt(dx**2 + dy**2)
+            x = another.x
+            y = another.y
+        
+        xDiff = self.x - x
+        yDiff = self.y - y
+        return math.sqrt(xDiff * xDiff + yDiff * yDiff)
 
-# MyLine class
+
 class MyLine:
-    def __init__(self, x1=0, y1=0, x2=0, y2=0, begin=None, end=None):
+    def __init__(self, x1=None, y1=None, x2=None, y2=None, begin=None, end=None):
         if begin is not None and end is not None:
             self.begin = begin
             self.end = end
@@ -74,28 +75,28 @@ class MyLine:
         self.end = end
     
     def getBeginX(self):
-        return self.begin.x
+        return self.begin.getX()
     
     def setBeginX(self, x):
-        self.begin.x = x
+        self.begin.setX(x)
     
     def getBeginY(self):
-        return self.begin.y
+        return self.begin.getY()
     
     def setBeginY(self, y):
-        self.begin.y = y
+        self.begin.setY(y)
     
     def getEndX(self):
-        return self.end.x
+        return self.end.getX()
     
     def setEndX(self, x):
-        self.end.x = x
+        self.end.setX(x)
     
     def getEndY(self):
-        return self.end.y
+        return self.end.getY()
     
     def setEndY(self, y):
-        self.end.y = y
+        self.end.setY(y)
     
     def getBeginXY(self):
         return self.begin.getXY()
@@ -109,17 +110,19 @@ class MyLine:
     def setEndXY(self, x, y):
         self.end.setXY(x, y)
     
-    # calculate the length and gradient
     def getLength(self):
         return self.begin.distance(another=self.end)
     
     def getGradient(self):
-        dx = self.end.x - self.begin.x
-        dy = self.end.y - self.begin.y
-        return math.atan2(dy, dx)
+        xDiff = self.begin.getX() - self.end.getX()
+        yDiff = self.begin.getY() - self.end.getY()
+        return math.atan2(yDiff, xDiff)
+    
+    def toString(self):
+        return f"MyLine[begin={self.begin}, end={self.end}]"
     
     def __str__(self):
-        return f"MyLine[begin={self.begin}, end={self.end}]"
+        return self.toString()
 
 
     
